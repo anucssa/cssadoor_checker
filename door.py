@@ -1,15 +1,17 @@
-mport RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import os, time
+
+pin = 7
 
 GPIO.setmode(GPIO.BOARD)
 
-GPIO.setup(3, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def send_off_req(attempts = 0):
     if attempts > 5:
-        return
+        return 
 
-    if GPIO.input(3):
+    if GPIO.input(pin):
         state = "true"
     else:
         state = "false"
@@ -24,8 +26,10 @@ def send_off_req(attempts = 0):
         time.sleep(5)
         send_off_req(attempts)
 
+
+
 while True:
-    GPIO.wait_for_edge(3, GPIO.BOTH)
+    GPIO.wait_for_edge(pin, GPIO.BOTH)
     print('I changed!')
     send_off_req()
     time.sleep(1) # to give the door time to settle
